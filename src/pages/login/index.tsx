@@ -4,10 +4,24 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { Input } from "../../components/imput"
 import { ButtonSubmit } from "../../components/buttons/buttonSubmit"
 import { Ilogin } from "../../interfaces/forms"
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from 'zod'
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvider"
+
+const schema = z.object({
+  email: z.string().email('must be an email').nonempty('email is required'),
+  password: z.string().nonempty('password is required')
+})
+
 
 export const Login = () => {
-  const {register, handleSubmit} = useForm<Ilogin>();
-  const onSubmit: SubmitHandler<Ilogin> = data => console.log(data);
+  const { signIn } = useContext(AuthContext)
+
+  const {register, handleSubmit, formState: {errors}} = useForm<Ilogin>({
+    resolver: zodResolver(schema)
+  });
+  const onSubmit: SubmitHandler<Ilogin> = data => signIn(data);
 
   return(
     <>
@@ -28,6 +42,7 @@ export const Login = () => {
               label="Email address"
               placeholder="email"
               required={true}
+              error={errors.email?.message}
               {...register('email')}
             />
 
@@ -37,6 +52,7 @@ export const Login = () => {
               label="Password"
               placeholder="password"
               required={true}
+              error={errors.password?.message}
               {...register('password')}
             />
 

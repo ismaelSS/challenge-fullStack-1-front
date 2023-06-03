@@ -5,16 +5,38 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Iregister } from "../../interfaces/forms";
 import { Input } from "../../components/imput";
 import { ButtonSubmit } from "../../components/buttons/buttonSubmit";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from 'zod'
+import { useNavigate } from "react-router-dom";
 
-export const Register = () => {
-  // async const respoponse = () => {
-  //   await api.post("contacts/", {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   })}
-  const {register, handleSubmit} = useForm<Iregister>();
-  const onSubmit: SubmitHandler<Iregister> = data => console.log(data);
+const schema = z.object({
+  name: z.string().nonempty('name is required'),
+  phone_number: z.string().nonempty('phone number is required'),
+  email: z.string().email('must be an email').nonempty('email is required'),
+  password: z.string().nonempty('password is required')
+    .min(8, 'password must be 8 characters')
+    .regex(/[a-z]/, 'must have a lowercase letter')
+    .regex(/[A-Z]/, 'must have an uppercase letter')
+    .regex(/\d/, 'must have a number')
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, 'must have a special character'),
+  confirm_password: z.string().nonempty('please confirm the password')
+}).refine((data) => data.password === data.confirm_password, {
+  message: "Passwords don't match",
+  path: ["confirm_password"],
+});
+
+export const RegisterPage = () => {
+  const registerFunction = async (data:Iregister) => {
+    const response = await api.post("users/", data)
+    if(response.status == 201){
+      navigate('/login')
+    }
+  }
+  const navigate = useNavigate()
+  const {register, handleSubmit, formState: {errors}} = useForm<Iregister>({
+    resolver: zodResolver(schema)
+  });
+  const onSubmit: SubmitHandler<Iregister> = data => registerFunction(data);
 
   return(
     <>
@@ -48,7 +70,7 @@ export const Register = () => {
             />
 
             <Input
-              id="emial"
+              id="email"
               type="email"
               label="Email address"
               placeholder="e-mail"
@@ -62,6 +84,7 @@ export const Register = () => {
               label="Password"
               placeholder="password"
               required={true}
+              error={errors.password?.message}
               {...register('password')}
             />
 
@@ -71,6 +94,8 @@ export const Register = () => {
               label="Confirm password"
               placeholder="confirm password"
               required={true}
+              error={errors.confirm_password?.message}
+              {...register('confirm_password')}
             />
 
             <ButtonSubmit text="Register"/>

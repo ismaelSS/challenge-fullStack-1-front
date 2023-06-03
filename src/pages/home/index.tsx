@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
+import { ContactCard } from "../../components/contactCard";
+import { Icontact } from "../../interfaces/props";
+import { useNavigate } from "react-router-dom";
+import { ContactsHeader } from "../../components/ContactsHeader";
+import { IpopUpSelector } from "../../interfaces/vars";
+import { AddContact } from "../../components/popUps/addContact";
 
-interface Icontact {
-  id:string
-  name: string
-  email: string
-  phone_number: string
-  created_at: string
-}
 
 export const Home = () => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imx1aXppbmhvQGVtaWFsLmNvbSIsImlhdCI6MTY4NTU2ODIzOCwiZXhwIjoxNjg1NTcxODM4LCJzdWIiOiI5MzNmM2IxNC01MmEyLTQxMTAtYWQyMC00MmYwNDA0OWM5NjAifQ.JbAoa6N9mizX5l1cranFT8qF8CXkDQ4nEcpCwW_0kkM";
+  const navigate = useNavigate();
+  const token = localStorage.getItem("@ismaelSS-contacts:token");
   const [contacts, setContacts] = useState<Icontact[]>([]);
   const [loading, setLoading] = useState(true)
+  const [popUpSelector, setPopUpSelector] = useState<IpopUpSelector>('none')
+  const [contastFocus, setContactFocus] = useState<Icontact | null>(null)
 
   useEffect(() => {
     async function fetchContacts() {
@@ -22,10 +24,14 @@ export const Home = () => {
             Authorization: `Bearer ${token}`
           }
         });
+        console.log(response)
 
         setContacts(response.data);
-        console.log(response.data)
       } catch (error) {
+
+        localStorage.clear()
+        navigate('/login')
+
         console.error(error);
       }finally{
         setLoading(false)
@@ -45,19 +51,29 @@ export const Home = () => {
   if(!contacts){
     return(
       <>
-        <h1 className="text-xl wid font-bold">{contacts.length}</h1>
         <h3 className="text-xl wid font-bold">sem livros irmão</h3>
       </>
     )
   }
 
   return (
-    <div>
-      {contacts.map((contact: Icontact) => (
-        <p key={contact.id}>{contact.name}</p>
-      ))}
-      <h1 className="text-xl wid font-bold">{contacts.length}</h1>
-      <h2>carregou</h2>
-    </div>
+
+    <body className="bg-blue-100">
+      <AddContact token={token} setPopUpSelector={setPopUpSelector} popUpSelector={popUpSelector}/>
+      <ContactsHeader setPopUpSelector={setPopUpSelector}/>
+      <ul className="container mx-auto mt-8 max-w-4xl flex flex-wrap justify-center gap-x-1">
+        {contacts.map((contact: Icontact) => (
+          <ContactCard
+            key={contact.id}
+            id={contact.id}
+            name={contact.name}
+            email={contact.email}
+            phone_number={contact.phone_number}
+            created_at={contact.created_at}
+          />
+        ))}
+    </ul>
+    </body>
+
   );
 };
