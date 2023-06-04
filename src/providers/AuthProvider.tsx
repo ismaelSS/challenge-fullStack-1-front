@@ -44,8 +44,6 @@ export const AuthProvider = ({ children }:{children:ReactNode}) => {
 
   const signIn = async (data:Ilogin) => {
     const response = await api.post("/login", data);
-    console.log(response)
-
     const { token } = response.data;
 
     localStorage.setItem("@ismaelSS-contacts:token", token);
