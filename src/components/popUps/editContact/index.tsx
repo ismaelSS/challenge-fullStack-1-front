@@ -37,48 +37,44 @@ export const EditContact = ({token, setPopUpSelector, popUpSelector, contactFocu
 
 
   return(
-    <div className={`flex ${popUpSelector==="edit"?'fixed':'hidden'} flex-col border-blue-600 border-2 rounded-lg bg-white mt-10 sm:mx-auto sm:w-full sm:max-w-sm max-w-80 w-80 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}>
-          <button onClick={() => setPopUpSelector('none')} className="rounded-bl-lg bg-indigo-600 hover:bg-indigo-500 h-7 w-7 self-end flex items-center justify-center">
-            <GrFormClose onClick={() => setPopUpSelector('none')} className="strocke-2 text-xl"/>
-          </button>
-          <h2 className="text-lg font-semibold self-center">Edit contact</h2>
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-
-            <Input
-              id="name"
-              type="text"
-              label="Name"
-              placeholder="name"
-              required={true}
-              error={errors.name?.message}
-              value={contactFocus?.name}
-              {...register('name')}
-            />
-
-            <Input
-              id="phone number"
-              type="text"
-              label="Phone number"
-              placeholder="phone number"
-              required={true}
-              error={errors.phone_number?.message}
-              value={contactFocus?.phone_number}
-              {...register('phone_number')}
-            />
-
-            <Input
-              id="email"
-              type="email"
-              label="Email address"
-              placeholder="e-mail"
-              required={true}
-              error={errors.email?.message}
-              value={contactFocus?.email}
-              {...register('email')}
-            />
-
-            <ButtonSubmit text="Edit Contact"/>
-          </form>
-        </div>
+<div className={`fixed ${popUpSelector === 'edit' ? 'block' : 'hidden'} top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-blue-600 rounded-lg w-80 max-w-80 sm:w-full sm:max-w-sm mt-10 px-4 py-6 flex flex-col`}>
+  <button onClick={() => setPopUpSelector('none')} className="self-end flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 hover:bg-indigo-500">
+    <GrFormClose onClick={() => setPopUpSelector('none')} className="text-xl strocke-2" />
+  </button>
+  <h2 className="self-center text-lg font-semibold">Edit contact</h2>
+  <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+    <Input
+      id="name"
+      type="text"
+      label="Name"
+      placeholder="Name"
+      required={true}
+      error={errors.name?.message}
+      value={contactFocus?.name}
+      {...register('name')}
+    />
+    <Input
+      id="phone-number"
+      type="text"
+      label="Phone number"
+      placeholder="Phone number"
+      required={true}
+      error={errors.phone_number?.message}
+      value={contactFocus?.phone_number}
+      {...register('phone_number')}
+    />
+    <Input
+      id="email"
+      type="email"
+      label="Email address"
+      placeholder="Email address"
+      required={true}
+      error={errors.email?.message}
+      value={contactFocus?.email}
+      {...register('email')}
+    />
+    <ButtonSubmit text="Edit Contact" />
+  </form>
+</div>
   )
 }

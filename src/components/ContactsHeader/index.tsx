@@ -32,7 +32,7 @@ export const ContactsHeader = ({ setPopUpSelector, navigate, setContactFocus, po
   return (
     <div className="w-screen bg-cyan-600 flex justify-around items-center h-8 fixed top-0 min-w-fit">
       <div className="w-4/5 h-full flex flex-row justify-between items-center min-w-fit flex-grow-0">
-        <BiExit className="h-6 w-6 w-24 min-w-fit" onClick={() => exitFunction()} />
+        <BiExit className="h-6 w-6 w-24 min-w-fit hover:cursor-pointer" onClick={() => exitFunction()} />
         <h2 className="text-lg font-semibold min-w-fit">Meus contatos</h2>
         <div className="flex gap-3 min-w-fit">
           <BsPersonFillGear

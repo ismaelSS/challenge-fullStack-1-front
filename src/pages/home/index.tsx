@@ -60,7 +60,7 @@ export const Home = () => {
 
   return (
 
-    <body className="bg-blue-100">
+    <body className="bg-blue-100 mt-16">
       {contastFocus != null ?
         <>
           <DeletContact contactId={contastFocus.id} token={token} setPopUpSelector={setPopUpSelector} popUpSelector={popUpSelector}/>
