@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { ContactsHeader } from "../../components/ContactsHeader";
 import { IpopUpSelector } from "../../interfaces/vars";
 import { AddContact } from "../../components/popUps/addContact";
+import { EditContact } from "../../components/popUps/editContact"
+import { DeletContact } from "../../components/popUps/deletContact";
 
 
 export const Home = () => {
@@ -59,10 +61,20 @@ export const Home = () => {
   return (
 
     <body className="bg-blue-100">
+      {contastFocus != null ?
+        <>
+          <DeletContact contactId={contastFocus.id} token={token} setPopUpSelector={setPopUpSelector} popUpSelector={popUpSelector}/>
+          <EditContact token={token} setPopUpSelector={setPopUpSelector} popUpSelector={popUpSelector} contact={contastFocus} contactFocus={contastFocus}/>
+        </>
+        :
+        null
+      }
       <AddContact token={token} setPopUpSelector={setPopUpSelector} popUpSelector={popUpSelector}/>
-      <ContactsHeader setPopUpSelector={setPopUpSelector}/>
+      <ContactsHeader setPopUpSelector={setPopUpSelector} navigate={navigate} setContactFocus={setContactFocus} popUpSelector={popUpSelector}/>
       <ul className="container mx-auto mt-8 max-w-4xl flex flex-wrap justify-center gap-x-1">
-        {contacts.map((contact: Icontact) => (
+        {contacts.map((contact: Icontact) => {
+          contact.created_at = contact.created_at.substring(0, 10)
+          return(
           <ContactCard
             key={contact.id}
             id={contact.id}
@@ -70,8 +82,9 @@ export const Home = () => {
             email={contact.email}
             phone_number={contact.phone_number}
             created_at={contact.created_at}
+            setContactFocus={setContactFocus}
           />
-        ))}
+        )})}
     </ul>
     </body>
 

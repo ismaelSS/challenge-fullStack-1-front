@@ -17,3 +17,10 @@ export type IcontactRegister = {
   email?:string,
   phone_number?:string,
 }
+
+export type IcontactEdit = {
+  id:string
+  name?:string,
+  email?:string,
+  phone_number?:string,
+}
