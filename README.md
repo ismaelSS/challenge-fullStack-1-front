@@ -1,6 +1,6 @@
 # challenge-fullStack-1-front
 
-Esse é a parte fornt-end de uma aplicação full stack recomendo que inicie a aplicação pela parte back-end. <br/>
+Esse é a parte front-end de uma aplicação full stack recomendo que inicie a aplicação pela parte back-end. <br/>
 Link da parte back-end: https://github.com/ismaelSS/challenge-fullStack-1-back <br/>
 
 ## Instalação e inicialização <br/>
